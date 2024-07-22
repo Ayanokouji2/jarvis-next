@@ -1,9 +1,13 @@
-const LandingPage = () =>{
-    return(
-        <div>
-            <h1> Landing Page </h1>
-        </div>
-    )
+import {SignedOut, SignInButton} from '@clerk/nextjs'
+
+const LandingPage = () => {
+	return (
+		<div>
+			<SignedOut>
+				<SignInButton />
+			</SignedOut>
+		</div>
+	)
 }
 
-export default LandingPage;
+export default LandingPage
