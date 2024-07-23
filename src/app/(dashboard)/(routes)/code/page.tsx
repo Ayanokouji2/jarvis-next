@@ -4,12 +4,12 @@ import * as z from 'zod'
 import axios from 'axios'
 
 import Heading from '@/components/heading'
-import {Code2, Divide} from 'lucide-react'
+import {Code2} from 'lucide-react'
 import {useForm} from 'react-hook-form'
 import {Input} from '@/components/ui/input'
 // import {ChatCompletionRequestMessage} from 'openai'
 
-import {formSchema} from '@/app/(dashboard)/(routes)/conversation/constants'
+import {formSchema} from '@/app/(dashboard)/(routes)/code/constants'
 import {zodResolver} from '@hookform/resolvers/zod'
 import {Form, FormControl, FormField, FormItem} from '@/components/ui/form'
 import {Button} from '@/components/ui/button'
@@ -21,7 +21,6 @@ import {cn} from '@/lib/utils'
 import UserAvatar from '@/components/user-avatar'
 import {BotAvatar} from '@/components/bot-avatar'
 
-import {marked} from 'marked'
 import Markdown from 'react-markdown'
 
 export default function CodePage() {
@@ -32,7 +31,7 @@ export default function CodePage() {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			prompt: '',
+			prompt: ''
 		},
 	})
 
@@ -49,7 +48,6 @@ export default function CodePage() {
 				messages: newMessages,
 			})
 
-			// const responseMarkedMessage = await marked.parse(response.data)
 			setMessages(current => [
 				...current,
 				response.data,
