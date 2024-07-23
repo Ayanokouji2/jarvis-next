@@ -4,7 +4,7 @@ import {Card} from '@/components/ui/card'
 import {cn} from '@/lib/utils'
 import {
 	ArrowRight,
-	Code,
+	Code2,
 	Image,
 	MessageCircle,
 	Music4,
@@ -43,7 +43,7 @@ const tools = [
 	},
 	{
 		label: 'Code Generation',
-		icon: Code,
+		icon: Code2,
 		color: 'text-green-500',
 		bgColor: 'bg-green-500/10',
 		href: '/code',
