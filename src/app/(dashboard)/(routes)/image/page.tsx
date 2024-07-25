@@ -40,6 +40,7 @@ export default function ConversationPage() {
 			setImages([])
 
 			const result = await axios.post('/api/image', data)
+			console.log('[IMAGE_RESPONSE]', result)
 
 			const urls = result.data?.map((image: {url: string}) => image.url)
 
@@ -109,9 +110,7 @@ export default function ConversationPage() {
 										</Select>
 									</FormItem>
 								)}
-							/>
-
-							
+							/>							
 							<FormField
 								name='resolution'
 								control={form.control}
