@@ -4,11 +4,11 @@ import * as z from 'zod'
 import axios from 'axios'
 
 import Heading from '@/components/heading'
-import {Music4} from 'lucide-react'
+import {Video} from 'lucide-react'
 import {useForm} from 'react-hook-form'
 import {Input} from '@/components/ui/input'
 
-import {formSchema} from '@/app/(dashboard)/(routes)/music/constants'
+import {formSchema} from '@/app/(dashboard)/(routes)/video/constants'
 import {zodResolver} from '@hookform/resolvers/zod'
 import {Form, FormControl, FormField, FormItem} from '@/components/ui/form'
 import {Button} from '@/components/ui/button'
@@ -17,10 +17,10 @@ import {useState} from 'react'
 import {Empty} from '@/components/Empty'
 import {Loader} from '@/components/loader'
 
-export default function MusicPage() {
+export default function VideoPage() {
 	const router = useRouter()
 
-	const [music, setMusic] = useState<string>()
+	const [video, setVideo] = useState<string>()
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -33,14 +33,15 @@ export default function MusicPage() {
 
 	const onSubmit = async (data: z.infer<typeof formSchema>) => {
 		try {
-			setMusic(undefined)
+			setVideo(undefined)
 
-			const response = await axios.post('/api/music', data)
-			setMusic(response.data.audio)
+			const response = await axios.post('/api/video', data)
+			console.log(response.data)
+			setVideo(response.data[0])
 
 			form.reset()
 		} catch (error: unknown) {
-			console.error('[MUSIC_ERROR]', error)
+			console.error('[VIDEO_ERROR]', error)
 		} finally {
 			router.refresh()
 		}
@@ -49,11 +50,11 @@ export default function MusicPage() {
 	return (
 		<div className=''>
 			<Heading
-				title='Music Generation'
-				description='Convert Your Prompt to Music'
-				icon={Music4}
-				iconColor='text-emerald-500'
-				bgColor='bg-emerald-500/10'
+				title='Video Generation'
+				description='Convert Your Prompt to Video'
+				icon={Video}
+				iconColor='text-orange-700'
+				bgColor='bg-orange-700/10'
 			/>
 			<div className='px-4 lg:px-8'>
 				<div>
@@ -90,12 +91,12 @@ export default function MusicPage() {
 							<Loader />
 						</div>
 					)}
-					{!music && !isLoading && (
-						<Empty label={'No Music has Generated'} />
+					{!video && !isLoading && (
+						<Empty label={'No video has Generated'} />
 					)}
 					{
-						music && (
-							<audio controls className='w-full mt-8' src={music}></audio>
+						video && (
+							<video controls className='w-full aspect-video rounded-lg border bg-black my-8' src={video}></video>
 						)
 					}
 				</div>
