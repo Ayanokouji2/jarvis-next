@@ -1,0 +1,17 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "mongodb"
+    url      = env("DATABASE_URL")
+}
+
+model UserApiLimit {
+    id String @id @default(cuid()) @map("_id") 
+	userId String @unique
+	count Int @default(0)
+	createAt DateTime @default(now())
+	updateAt DateTime @updatedAt
+	
+}
