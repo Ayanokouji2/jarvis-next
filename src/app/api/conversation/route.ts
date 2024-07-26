@@ -1,6 +1,6 @@
 import { auth } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
-import OpenAI from 'openai';
+import { OpenAIApi, Configuration } from 'openai';
 
 // Google Gemini AI
 import { GoogleGenerativeAI } from "@google/generative-ai";
@@ -9,17 +9,22 @@ const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY as string);
 
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-const openai = new OpenAI({
+const config = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
 });
 
-export async function POST(request : Request){
+const openai = new OpenAIApi(config);
+
+import { checkApiLimit, increaseApiLimit } from '@/lib/api-limit'
+
+
+export async function POST(request: Request) {
     try {
         const { userId } = auth()
         const body = await request.json()
-        const {messages} = body
+        const { messages } = body
 
-        if(!userId){
+        if (!userId) {
             return NextResponse.json({
                 status: 401,
                 body: {
@@ -28,10 +33,10 @@ export async function POST(request : Request){
             });
         }
 
-        if(!model.apiKey){
+        if (!model.apiKey) {
             return NextResponse.json({
                 message: 'Google API Key is not configured properly',
-            },{status: 500});
+            }, { status: 500 });
         }
         // if(!openai.apiKey){
         //     return NextResponse.json({
@@ -42,7 +47,7 @@ export async function POST(request : Request){
         //     });
         // }
 
-        if(!messages){
+        if (!messages) {
             return NextResponse.json({
                 status: 400,
                 body: {
@@ -56,17 +61,28 @@ export async function POST(request : Request){
         //     messages
         // })
 
+        const freeTier = await checkApiLimit()
+
+        if (!freeTier) {
+            return NextResponse.json({
+                error: 'Payment Required',
+
+            }, { status: 403 });
+        }
+
         const result = await model.generateContent(messages)
 
+        await increaseApiLimit()
+
         return NextResponse.json(result.response.text())
-    } catch (error : unknown) {
+    } catch (error: unknown) {
         console.error("[CONVERSATION_ERROR]", error);
-        return NextResponse.json( {
+        return NextResponse.json({
             status: 500,
             body: {
                 error: 'Internal Server Error',
             },
         });
-        
+
     }
 }

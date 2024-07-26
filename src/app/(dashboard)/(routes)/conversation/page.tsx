@@ -51,7 +51,11 @@ export default function ConversationPage() {
 			})
 			// console.log('[newMessages]', newMessages)
 			const responseMarkedMessage = await marked.parse(response.data)
-			setMessages(current => [...current, responseMarkedMessage , data.prompt])
+			setMessages(current => [
+				...current,
+				responseMarkedMessage,
+				data.prompt,
+			])
 
 			form.reset()
 		} catch (error: unknown) {
@@ -123,7 +127,10 @@ export default function ConversationPage() {
 								) : (
 									<BotAvatar />
 								)}
-								<p className="text-sm" dangerouslySetInnerHTML={{ __html: message }} />
+								<p
+									className='text-sm'
+									dangerouslySetInnerHTML={{__html: message}}
+								/>
 							</div>
 						))}
 					</div>

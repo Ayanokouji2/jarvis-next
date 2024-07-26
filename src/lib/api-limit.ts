@@ -46,7 +46,7 @@ export const checkApiLimit = async () =>{
         const { userId } = await auth()
 
         if( !userId){
-            return
+            return false
         }
 
         const userApiLimit = await prismadb?.userApiLimit.findUnique({
@@ -58,7 +58,7 @@ export const checkApiLimit = async () =>{
         if( userApiLimit && userApiLimit.count >= MAX_FREE_TIER){
             return false
         }
-        
+
         return true
     } catch (error : unknown) {
         console.error('[API_LIMIT_ERROR]', error)
