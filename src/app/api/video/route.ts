@@ -1,3 +1,4 @@
+import { checkApiLimit, increaseApiLimit } from '@/lib/api-limit';
 import { auth } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
 import Replicate from "replicate";
@@ -32,6 +33,14 @@ export async function POST(request: Request) {
             });
         }
 
+        const freeTier = await checkApiLimit()
+
+        if (!freeTier) {
+            return NextResponse.json({
+                error: 'Payment Required',
+
+            }, { status: 403 });
+        }
         /* 
         {
                 input: {
@@ -58,6 +67,8 @@ export async function POST(request: Request) {
                 }
             }
         );
+
+        await increaseApiLimit();
 
         return NextResponse.json(result)
     } catch (error: unknown) {

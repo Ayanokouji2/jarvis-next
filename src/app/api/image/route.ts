@@ -10,6 +10,7 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 // Google Gemini AI
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { checkApiLimit, increaseApiLimit } from '@/lib/api-limit';
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY as string);
 
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
@@ -38,11 +39,22 @@ export async function POST(request: Request) {
             }, { status: 400 });
         }
 
+        const freeTier = await checkApiLimit()
+
+        if (!freeTier) {
+            return NextResponse.json({
+                error: 'Payment Required',
+
+            }, { status: 403 });
+        }
+
         const response = await openai.createImage({
             prompt,
             n: parseInt(amount),
             size: resolution,
         })
+
+        await increaseApiLimit()
 
         console.log([ 'IMAGE_RESPONSE', response ]);
         

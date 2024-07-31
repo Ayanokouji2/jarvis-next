@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 
 // Google Gemini AI
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { checkApiLimit, increaseApiLimit } from '@/lib/api-limit';
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY as string);
 
 
@@ -38,8 +39,19 @@ export async function POST(request : Request){
                 },
             });
         }
+
+        const freeTier = await checkApiLimit()
+
+        if (!freeTier) {
+            return NextResponse.json({
+                error: 'Payment Required',
+
+            }, { status: 403 });
+        }
+
         const result = await model.generateContent(messages)
 
+        await increaseApiLimit()
         console.log(result)
         return NextResponse.json(result.response.text())
     } catch (error : unknown) {
