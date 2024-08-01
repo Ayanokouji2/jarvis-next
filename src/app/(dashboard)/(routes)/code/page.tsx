@@ -40,7 +40,7 @@ export default function CodePage() {
 	const onSubmit = async (data: z.infer<typeof formSchema>) => {
 		try {
 			const newMessages = [
-				'You are a code generator that helps senior developers write, complete and fix there code. ',
+				'You are a code generator that helps senior developers write, complete and fix there code. Using the given prompts, you can generate code snippets, functions, classes, etc. You can also generate code completions, fix code errors, and more. You can also ask for help with your code, and the code generator will provide you with the necessary information to help you solve your problem. And also helps them in understanding the theory of the code or any IT related topic.',
 				data.prompt,
 			]
 
