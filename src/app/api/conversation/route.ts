@@ -1,6 +1,6 @@
 import { auth } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
-import { OpenAIApi, Configuration } from 'openai';
+// import { OpenAIApi, Configuration } from 'openai';
 
 // Google Gemini AI
 import { GoogleGenerativeAI } from "@google/generative-ai";
@@ -9,11 +9,11 @@ const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY as string);
 
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-const config = new Configuration({
-    apiKey: process.env.OPENAI_API_KEY,
-});
+// const config = new Configuration({
+//     apiKey: process.env.OPENAI_API_KEY,
+// });
 
-const openai = new OpenAIApi(config);
+// const openai = new OpenAIApi(config);
 
 import { checkApiLimit, increaseApiLimit } from '@/lib/api-limit'
 
