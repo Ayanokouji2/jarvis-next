@@ -22,10 +22,12 @@ import UserAvatar from '@/components/user-avatar'
 import {BotAvatar} from '@/components/bot-avatar'
 
 import {marked} from 'marked'
+import { useProModal } from '@/hooks/use-pro-modal'
 
 export default function ConversationPage() {
 	const router = useRouter()
 
+	const proModal= useProModal()
 	
 	const [messages, setMessages] = useState<String[]>([])
 
@@ -50,7 +52,7 @@ export default function ConversationPage() {
 			const response = await axios.post('/api/conversation', {
 				messages: data.prompt,
 			})
-			// console.log('[newMessages]', newMessages)
+			console.log('[newMessages]', response)
 			const responseMarkedMessage = await marked.parse(response.data)
 			setMessages(current => [
 				...current,
@@ -59,7 +61,10 @@ export default function ConversationPage() {
 			])
 
 			form.reset()
-		} catch (error: unknown) {
+		} catch (error: any) {
+			if(error?.response?.status === 403){
+				proModal.onOpen();
+			}
 			console.error('[CONVERSATION_ERROR]', error)
 		} finally {
 			router.refresh()

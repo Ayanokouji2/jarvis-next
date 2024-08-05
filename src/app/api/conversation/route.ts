@@ -66,7 +66,6 @@ export async function POST(request: Request) {
         if (!freeTier) {
             return NextResponse.json({
                 error: 'Payment Required',
-
             }, { status: 403 });
         }
 

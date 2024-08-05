@@ -11,3 +11,5 @@ export const  useProModal = create<useProModalState>((set)=>({
     onOpen : ()=>set({isOpen:true}),
     onClose : ()=>set({isOpen:false})
 }))
+
+ 

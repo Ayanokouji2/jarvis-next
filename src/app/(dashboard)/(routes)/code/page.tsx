@@ -22,9 +22,11 @@ import UserAvatar from '@/components/user-avatar'
 import {BotAvatar} from '@/components/bot-avatar'
 
 import Markdown from 'react-markdown'
+import { useProModal } from '@/hooks/use-pro-modal'
 
 export default function CodePage() {
 	const router = useRouter()
+	const proModal = useProModal()
 
 	const [messages, setMessages] = useState<string[]>([])
 
@@ -55,8 +57,10 @@ export default function CodePage() {
 			])
 
 			form.reset()
-		} catch (error: unknown) {
-			console.error('[CONVERSATION_ERROR]', error)
+		} catch (error: any) {
+			if(error?.response?.status === 403){
+				proModal.onOpen();
+			}
 		} finally {
 			router.refresh()
 		}

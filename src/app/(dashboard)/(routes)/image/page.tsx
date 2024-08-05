@@ -18,9 +18,11 @@ import {Empty} from '@/components/Empty'
 import {Loader} from '@/components/loader'
 import {cn} from '@/lib/utils'
 import {Select, SelectTrigger, SelectValue, SelectContent, SelectItem} from '@/components/ui/select'
+import { useProModal } from '@/hooks/use-pro-modal'
 
 export default function ConversationPage() {
 	const router = useRouter()
+	const proModal = useProModal()
 
 	const [images, setImages] = useState<string[]>([])
 
@@ -45,8 +47,10 @@ export default function ConversationPage() {
 			const urls = result.data?.map((image: {url: string}) => image.url)
 
 			setImages(urls)
-		} catch (error: unknown) {
-			console.error('[IMAGE_ERROR]', error)
+		} catch (error: any) {
+			if(error?.response?.status === 403){
+				proModal.onOpen();
+			}
 		} finally {
 			router.refresh()
 		}
