@@ -1,17 +1,27 @@
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "mongodb"
-    url      = env("DATABASE_URL")
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
 }
 
 model UserApiLimit {
-    id String @id @default(cuid()) @map("_id") 
-	userId String @unique
-	count Int @default(0)
-	createAt DateTime @default(now())
-	updateAt DateTime @updatedAt
-	
+  id       String   @id @map("_id")
+  count    BigInt
+  createAt DateTime @db.Date
+  updateAt DateTime @db.Date
+  userId   String   @unique
 }
+
+model UserSubcription {
+    id String @id @default(auto()) @map("_id") @db.ObjectId
+    userId String @unique
+    stripeCustomerId String? @unique @map("stripe_customer_id")
+    stripeSubscriptionId String? @unique @map("stripe_subscription_id") 
+    stripePriceId String? @unique @map("stripe_price_id")
+    stripeCurrentPeriodEnd DateTime? @map("stripe_current_period_end")
+
+}
+
