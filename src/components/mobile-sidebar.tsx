@@ -6,7 +6,7 @@ import {Sheet, SheetContent, SheetTrigger} from '@/components/ui/sheet'
 import Sidebar from '@/components/sidebar'
 import {useEffect, useState} from 'react'
 
-export default function MobileSidebar() {
+export default function MobileSidebar({apiLimit}:{apiLimit : number}) {
 	const [isMounted, setIsMounted] = useState(false)
 
 	useEffect(() => {
@@ -22,7 +22,7 @@ export default function MobileSidebar() {
 				</Button>
 			</SheetTrigger>
 			<SheetContent title='Sidebar' side='left' className='p-0'>
-				<Sidebar />
+				<Sidebar apiLimit={apiLimit} />
 			</SheetContent>
 		</Sheet>
 	)
