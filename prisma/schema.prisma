@@ -16,12 +16,17 @@ model UserApiLimit {
 }
 
 model UserSubcription {
-    id String @id @default(auto()) @map("_id") @db.ObjectId
-    userId String @unique
-    stripeCustomerId String? @unique @map("stripe_customer_id")
-    stripeSubscriptionId String? @unique @map("stripe_subscription_id") 
-    stripePriceId String? @unique @map("stripe_price_id")
-    stripeCurrentPeriodEnd DateTime? @map("stripe_current_period_end")
-
+  id                     String @id @default(auto()) @map("_id") @db.ObjectId
+  /// Field referred in an index, but found no data to define the type.
+  stripe_customer_id     Json?  @unique
+  /// Field referred in an index, but found no data to define the type.
+  stripe_price_id        Json?  @unique
+  /// Field referred in an index, but found no data to define the type.
+  stripe_subscription_id Json?  @unique
+  /// Field referred in an index, but found no data to define the type.
+  userId                 Json?  @unique
 }
 
+model user {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+}
