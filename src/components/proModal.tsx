@@ -61,9 +61,26 @@ import {Badge} from '@/components/ui/badge'
 import { Card } from './ui/card'
 import { cn } from '@/lib/utils'
 import { Button } from './ui/button'
+import axios from 'axios'
+import { useState } from 'react'
 
 export default function ProModal() {
+	const [loading, setLoading] = useState(false)
 	const proModal = useProModal()
+
+	const onSubscribe =async () => {
+		try {
+			setLoading(true)
+			const response = await axios.get('/api/stripe')
+
+			window.location.href = response.data.url
+		} catch (error : any) {
+			console.log(`[Stripe Error] ${error.message}`)
+		}
+		finally{
+			setLoading(false)
+		}
+	}
 	return (
 		<Dialog open={proModal.isOpen} onOpenChange={proModal.onClose}>
 			<DialogContent>
@@ -96,7 +113,7 @@ export default function ProModal() {
 						))}
                     </DialogDescription>
 					<DialogFooter>
-						<Button size='lg' variant='premium' className='w-full'>
+						<Button size='lg' variant='premium' className='w-full' onClick={onSubscribe}>
 							Upgrade
 							<Zap className='fill-white ml-2 h-4 aspect-square'/>
 						</Button>

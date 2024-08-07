@@ -9,7 +9,7 @@ datasource db {
 
 model UserApiLimit {
   id       String   @id @map("_id")
-  count    BigInt
+  count    Int
   createAt DateTime @db.Date
   updateAt DateTime @db.Date
   userId   String   @unique
