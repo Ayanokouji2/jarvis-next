@@ -40,6 +40,7 @@ export async function POST(req: Request) {
                 )
             }
         })
+
     }
 
     if( event.type === "invoice.payment_succeeded") {
