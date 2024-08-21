@@ -28,14 +28,12 @@ export const increaseApiLimit = async () => {
             })
         }
         else{
-            console.log('Creating new userApiLimit')
-            const user = await prismadb?.userApiLimit.create({
+            await prismadb?.userApiLimit.create({
                 data:{
                     userId ,
                     count: 1
                 }
             })
-            console.log('Created new userApiLimit', user)
         } 
     } catch (error : unknown) {
         console.error('[API_LIMIT_ERROR]', error)
