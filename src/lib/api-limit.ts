@@ -1,6 +1,6 @@
 import  {auth}  from '@clerk/nextjs/server'
 import prismadb from '@/lib/prismadb'
-
+import mongoose from 'mongoose'
 import { MAX_FREE_TIER } from '@/constant'
 
 export const increaseApiLimit = async () => {
@@ -28,12 +28,14 @@ export const increaseApiLimit = async () => {
             })
         }
         else{
-            await prismadb?.userApiLimit.create({
+            console.log('Creating new userApiLimit')
+            const user = await prismadb?.userApiLimit.create({
                 data:{
-                    userId,
+                    userId ,
                     count: 1
                 }
             })
+            console.log('Created new userApiLimit', user)
         } 
     } catch (error : unknown) {
         console.error('[API_LIMIT_ERROR]', error)

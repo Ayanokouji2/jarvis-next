@@ -57,12 +57,12 @@ const routes = [
 	},
 	{
 		label: 'Setting',
-		href: '/setting',
+		href: '/settings',
 		icon: Settings,
 	},
 ]
 
-export default function Sidebar({apiLimit}:{apiLimit : number}) {
+export default  function Sidebar({apiLimit, isPro}:{apiLimit : number, isPro: boolean}) {
 	const pathname = usePathname()
 
 	return (
@@ -101,9 +101,11 @@ export default function Sidebar({apiLimit}:{apiLimit : number}) {
 							</div>
 						</Link>
 					))}
+
+
 				</div>
 			</div>
-			<FreeCounter  apiLimit={apiLimit}/>
+			<FreeCounter isPro={isPro} apiLimit={apiLimit}/>
 		</div>
 	)
 }
