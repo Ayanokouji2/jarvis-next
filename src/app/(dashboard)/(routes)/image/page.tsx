@@ -19,6 +19,7 @@ import {Loader} from '@/components/loader'
 import {cn} from '@/lib/utils'
 import {Select, SelectTrigger, SelectValue, SelectContent, SelectItem} from '@/components/ui/select'
 import { useProModal } from '@/hooks/use-pro-modal'
+import { toast } from 'sonner'
 
 export default function ConversationPage() {
 	const router = useRouter()
@@ -51,6 +52,8 @@ export default function ConversationPage() {
 			if(error?.response?.status === 403){
 				proModal.onOpen();
 			}
+			else toast.error(error?.response?.data?.message || error.message)
+
 		} finally {
 			router.refresh()
 		}

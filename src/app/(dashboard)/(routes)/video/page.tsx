@@ -17,6 +17,7 @@ import {useState} from 'react'
 import {Empty} from '@/components/Empty'
 import {Loader} from '@/components/loader'
 import { useProModal } from '@/hooks/use-pro-modal'
+import { toast } from 'sonner'
 
 export default function VideoPage() {
 	const router = useRouter()
@@ -46,6 +47,8 @@ export default function VideoPage() {
 			if(error?.response?.status === 403){
 				proModal.onOpen();
 			}
+			else toast.error(error?.response?.data?.message || error.message)
+
 		} finally {
 			router.refresh()
 		}

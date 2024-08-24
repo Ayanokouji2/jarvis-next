@@ -23,6 +23,7 @@ import {BotAvatar} from '@/components/bot-avatar'
 
 import Markdown from 'react-markdown'
 import { useProModal } from '@/hooks/use-pro-modal'
+import { toast } from 'sonner'
 
 export default function CodePage() {
 	const router = useRouter()
@@ -61,6 +62,7 @@ export default function CodePage() {
 			if(error?.response?.status === 403){
 				proModal.onOpen();
 			}
+			else toast.error(error?.response?.data?.message || error.message)
 		} finally {
 			router.refresh()
 		}

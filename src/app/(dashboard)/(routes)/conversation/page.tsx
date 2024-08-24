@@ -23,6 +23,7 @@ import {BotAvatar} from '@/components/bot-avatar'
 
 import {marked} from 'marked'
 import { useProModal } from '@/hooks/use-pro-modal'
+import { toast } from 'sonner'
 
 export default function ConversationPage() {
 	const router = useRouter()
@@ -65,6 +66,8 @@ export default function ConversationPage() {
 			if(error?.response?.status === 403){
 				proModal.onOpen();
 			}
+			else toast.error(error?.response?.data?.message || error.message)
+
 			console.error('[CONVERSATION_ERROR]', error)
 		} finally {
 			router.refresh()
