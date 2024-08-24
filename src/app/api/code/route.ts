@@ -1,9 +1,11 @@
 import { auth } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
 
+import { checkApiLimit, increaseApiLimit } from '@/lib/api-limit';
+import { checkSubscription } from '@/lib/subscription';
+
 // Google Gemini AI
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { checkApiLimit, increaseApiLimit } from '@/lib/api-limit';
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY as string);
 
 
@@ -41,8 +43,10 @@ export async function POST(request : Request){
         }
 
         const freeTier = await checkApiLimit()
+        const isPro = await checkSubscription()
 
-        if (!freeTier) {
+
+        if (!freeTier && !isPro) {
             return NextResponse.json({
                 error: 'Payment Required',
 
@@ -50,9 +54,9 @@ export async function POST(request : Request){
         }
 
         const result = await model.generateContent(messages)
+        if(!isPro)
+            await increaseApiLimit()
 
-        await increaseApiLimit()
-        console.log(result)
         return NextResponse.json(result.response.text())
     } catch (error : unknown) {
         console.error("[CONVERSATION_ERROR]", error);

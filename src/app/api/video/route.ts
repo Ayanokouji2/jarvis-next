@@ -1,4 +1,5 @@
 import { checkApiLimit, increaseApiLimit } from '@/lib/api-limit';
+import { checkSubscription } from '@/lib/subscription';
 import { auth } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
 import Replicate from "replicate";
@@ -34,8 +35,9 @@ export async function POST(request: Request) {
         }
 
         const freeTier = await checkApiLimit()
-
-        if (!freeTier) {
+        const isPro = await checkSubscription()
+        
+        if (!freeTier && !isPro) {
             return NextResponse.json({
                 error: 'Payment Required',
 
@@ -68,7 +70,8 @@ export async function POST(request: Request) {
             }
         );
 
-        await increaseApiLimit();
+        if(!isPro)
+            await increaseApiLimit();
 
         return NextResponse.json(result)
     } catch (error: unknown) {

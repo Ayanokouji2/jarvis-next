@@ -58,7 +58,7 @@ const routes = [
 	{
 		label: 'Setting',
 		href: '/settings',
-		icon: Settings,
+		icon: Settings, 
 	},
 ]
 

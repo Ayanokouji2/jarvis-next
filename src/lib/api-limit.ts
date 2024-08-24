@@ -1,6 +1,5 @@
 import  {auth}  from '@clerk/nextjs/server'
 import prismadb from '@/lib/prismadb'
-import mongoose from 'mongoose'
 import { MAX_FREE_TIER } from '@/constant'
 
 export const increaseApiLimit = async () => {

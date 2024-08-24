@@ -16,6 +16,7 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 // const openai = new OpenAIApi(config);
 
 import { checkApiLimit, increaseApiLimit } from '@/lib/api-limit'
+import { checkSubscription } from '@/lib/subscription';
 
 
 export async function POST(request: Request) {
@@ -62,8 +63,9 @@ export async function POST(request: Request) {
         // })
 
         const freeTier = await checkApiLimit()
+        const isPro = await checkSubscription()
 
-        if (!freeTier) {
+        if (!freeTier && !isPro) {
             return NextResponse.json({
                 error: 'Payment Required',
             }, { status: 403 });
@@ -71,7 +73,8 @@ export async function POST(request: Request) {
 
         const result = await model.generateContent(messages)
 
-        await increaseApiLimit()
+        if(!isPro)
+            await increaseApiLimit()
 
         return NextResponse.json(result.response.text())
     } catch (error: unknown) {
