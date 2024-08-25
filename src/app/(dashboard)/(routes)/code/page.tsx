@@ -69,7 +69,7 @@ export default function CodePage() {
 	}
 
 	return (
-		<div className=''>
+		<div className='overflow-hidden '>
 			<Heading
 				title='Code Generation'
 				description='Most Intelligent AI model to help you write code'

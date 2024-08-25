@@ -63,6 +63,7 @@ import { cn } from '@/lib/utils'
 import { Button } from './ui/button'
 import axios from 'axios'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 export default function ProModal() {
 	const [loading, setLoading] = useState(false)
@@ -75,6 +76,7 @@ export default function ProModal() {
 
 			window.location.href = response.data.url
 		} catch (error : any) {
+			toast.error(error?.response?.data?.message || error.message)
 			console.log(`[Stripe Error] ${error.message}`)
 		}
 		finally{

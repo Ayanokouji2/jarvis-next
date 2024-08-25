@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import axios from "axios"
 import { Zap } from "lucide-react"
 import { useState } from "react"
+import { toast } from "sonner"
 
 interface SubscriptionButtonProps {
     isPro : boolean
@@ -20,6 +21,8 @@ export function SubscriptionButton({isPro = false} : SubscriptionButtonProps) {
 
             window.location.href = response.data.url
         } catch (error : any) {
+			toast.error(error?.response?.data?.message || error.message)
+
             console.log(`${error.message} - [BILLING_ERROR]`)
         }finally{
             setLoading(false)
