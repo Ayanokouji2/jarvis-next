@@ -36,19 +36,20 @@ export async function POST(request : Request){
 
         const freeTier = await checkApiLimit()
         const isPro = await checkSubscription()
-
+        
         if (!freeTier && !isPro) {
             return NextResponse.json({
                 error: 'Payment Required',
-
+                
             }, { status: 403 });
         }
-
+        
         const result = await replicate.run("riffusion/riffusion:8cf61ea6c56afd61d8f5b9ffd14d7c216c0a93844ce2d82ac1c9ecc9c7f24e05", {
             input: {
                 prompt_b : prompt
             }
         });
+        
 
         if(!isPro)
             await increaseApiLimit()
