@@ -1,5 +1,5 @@
-import  {auth}  from '@clerk/nextjs/server'
 import prismadb from '@/lib/prismadb'
+import  {auth}  from '@clerk/nextjs/server'
 import { MAX_FREE_TIER } from '@/constant'
 
 export const increaseApiLimit = async () => {

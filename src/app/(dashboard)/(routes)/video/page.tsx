@@ -39,6 +39,9 @@ export default function VideoPage() {
 			setVideo(undefined)
 
 			const response = await axios.post('/api/video', data)
+			if(response.data.status === 500){
+				toast.error(response.data.body.error)
+			}
 			console.log(response.data)
 			setVideo(response.data[0])
 

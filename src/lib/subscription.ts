@@ -1,5 +1,5 @@
-import { auth } from '@clerk/nextjs/server'
 import prismadb from '@/lib/prismadb'
+import { auth } from '@clerk/nextjs/server'
 
 const DAY_IN_MS = 1000 * 60 * 60 * 24 
 
