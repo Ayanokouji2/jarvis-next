@@ -3,8 +3,8 @@ import  {auth}  from '@clerk/nextjs/server'
 import { MAX_FREE_TIER } from '@/constant'
 
 export const increaseApiLimit = async () => {
+    const { userId } = auth()
     try {
-        const { userId } = await auth()
 
         if( !userId){
             return
@@ -41,8 +41,8 @@ export const increaseApiLimit = async () => {
 }
 
 export const checkApiLimit = async () =>{
+    const { userId } = auth()
     try {
-        const { userId } = await auth()
 
         if( !userId){
             return false
@@ -66,9 +66,9 @@ export const checkApiLimit = async () =>{
 }
 
 export const getApiLimit = async () : Promise<number> =>{
+    const { userId } = auth(); 
     try{
 
-        const { userId } = await auth(); 
 
         if( !userId){
             return 0
